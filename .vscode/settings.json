@@ -20,10 +20,14 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.documentSelectors": ["**/*.svg"],
-  "eslint.options": {
-    "cache": true,
-    "reportUnusedDisableDirectives": "error"
-  },
   "css.validate": false,
-  "testExplorer.useNativeTesting": true
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true
+  }
 }
