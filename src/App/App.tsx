@@ -6,7 +6,7 @@ import { midEllipsis } from "@/utils";
 import { defaultAbiCoder as abi } from "@ethersproject/abi";
 import successSvg from "@static/success.svg";
 import { WorldIDWidget } from "@worldcoin/id";
-import { VerificationResponse } from "@worldcoin/id/dist/types";
+import type { VerificationResponse } from "@worldcoin/id/dist/types";
 import cn from "classnames";
 import { ethers } from "ethers";
 import React from "react";
@@ -39,8 +39,14 @@ export const App = React.memo(function App() {
       provider
         .enable()
         .then(() => {
-          setWalletAddress(provider.accounts[0]);
-          setScreen(Screen.Confirm);
+          if (provider.chainId !== 80001) {
+            modal.toggle("on");
+            setModalContent(modalVariants.wrongChainId);
+            provider.disconnect().catch(console.error.bind(console));
+          } else {
+            setWalletAddress(provider.accounts[0]);
+            setScreen(Screen.Confirm);
+          }
         })
         .catch((error) => console.error(error));
     } catch (err) {
@@ -49,7 +55,7 @@ export const App = React.memo(function App() {
   }, [provider]);
 
   const logout = () => {
-    provider?.disconnect().catch(console.error.bind(console));
+    provider.disconnect().catch(console.error.bind(console));
     window.location.reload();
   };
 
@@ -91,10 +97,9 @@ export const App = React.memo(function App() {
     }
   };
 
-  const modalButtonAction = React.useCallback(
-    () => modal.toggle("off"),
-    [modal],
-  );
+  const modalButtonAction = React.useCallback(() => {
+    modal.toggle("off");
+  }, [modal]);
 
   return (
     <div className="relative grid h-full w-full content-between bg-0f0b16 px-6 pt-5 xs:px-16 xs:pb-4.5 xs:pt-9">

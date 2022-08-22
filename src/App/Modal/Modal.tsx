@@ -2,11 +2,12 @@ import { Button } from "@/common/Button/Button";
 import { Icon } from "@/common/Icon";
 import type { ImageSource, ToggleState } from "@/common/types";
 import cn from "classnames";
+import type { ReactNode } from "react";
 import React from "react";
 
 export const Modal = React.memo(function Modal(props: {
   status: string;
-  description?: string;
+  description?: ReactNode | string;
   buttonText?: string;
   visibility: ToggleState;
   icon: ImageSource;
